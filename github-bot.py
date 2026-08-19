@@ -1,28 +1,33 @@
-import requests, zipfile, tempfile, os, base64, time, sqlite3, random, string, shutil, logging
+import requests, zipfile, tempfile, os, base64, time, sqlite3, random, string, shutil, logging, sys
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, MessageHandler, filters, CommandHandler, CallbackQueryHandler, ContextTypes
 from datetime import datetime
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-# ===== Settings =====
+# ===== رفع مشکل imghdr در پایتون ۳.۱۳ به بالا =====
+if sys.version_info >= (3, 13):
+    import types
+    imghdr = types.ModuleType('imghdr')
+    def what(file, h=None):
+        return None
+    imghdr.what = what
+    sys.modules['imghdr'] = imghdr
+
+# ===== تنظیمات =====
 TOKEN = "8976172050:AAEkbfGlBMpPuJvvOg8B02IebZrW-EDMRso"
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = "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"
 USERNAME = "rzgarshryty824-cpu"
-ADMINS = [6830764999]  # Your Telegram account's numeric ID  
+ADMINS = [6830764999]  # آیدی عددی خودت
+CHANNEL_USERNAME = "kunfigs"  # نام کاربری کانال (با @)
+CHANNEL_ID = -1003344438918  # آیدی عددی کانال
+PROXY = None  # اگه نیاز داری: "http://proxy:port"
 
-#Mandatory channel join
-CHANNEL_USERNAME = "kunfigs"  #Channel ID with @
-CHANNEL_ID = -1003344438918  #Your channel's numeric ID
-
-#Proxy settings (optional)
-PROXY = None  
-
-#Log settings
+# ===== تنظیمات لاگ =====
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-#Database
+# ===== دیتابیس =====
 def init_db():
     conn = sqlite3.connect('users.db')
     c = conn.cursor()
@@ -134,7 +139,6 @@ async def start(update: Update, context):
     user_id = update.effective_user.id
     username = update.effective_user.username or "کاربر"
     
-    # چک کردن جوین
     if not await check_membership(update, context):
         await join_required(update, context)
         return
@@ -169,7 +173,6 @@ async def button_handler(update: Update, context):
     await query.answer()
     user_id = query.from_user.id
     
-    # چک کردن جوین برای همه دکمه‌ها
     if query.data != "check_join" and not await check_membership(update, context):
         await query.edit_message_text("🔒 لطفاً ابتدا در کانال عضو شوید!")
         keyboard = [[InlineKeyboardButton("📢 جوین کانال", url=f"https://t.me/{CHANNEL_USERNAME.replace('@', '')}")]]
@@ -246,7 +249,6 @@ async def handle_file(update: Update, context):
     user_id = update.effective_user.id
     username = update.effective_user.username or "کاربر"
     
-    # چک کردن جوین
     if not await check_membership(update, context):
         await update.message.reply_text("🔒 لطفاً ابتدا در کانال عضو شوید!")
         keyboard = [[InlineKeyboardButton("📢 جوین کانال", url=f"https://t.me/{CHANNEL_USERNAME.replace('@', '')}")]]
@@ -407,7 +409,6 @@ def main():
     
     app = Application.builder().token(TOKEN).build()
     
-    # اضافه کردن هندلرها
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_file))
