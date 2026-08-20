@@ -1,18 +1,20 @@
-import requests, zipfile, tempfile, os, base64, time, sqlite3, random, string, shutil, logging, sys
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, MessageHandler, filters, CommandHandler, CallbackQueryHandler, ContextTypes
+import requests
+import zipfile
+import tempfile
+import os
+import base64
+import time
+import sqlite3
+import random
+import string
+import shutil
+import logging
+import sys
 from datetime import datetime
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-
-# ===== رفع مشکل imghdr در پایتون ۳.۱۳ به بالا =====
-if sys.version_info >= (3, 13):
-    import types
-    imghdr = types.ModuleType('imghdr')
-    def what(file, h=None):
-        return None
-    imghdr.what = what
-    sys.modules['imghdr'] = imghdr
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, MessageHandler, filters, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # ===== تنظیمات =====
 TOKEN = "8976172050:AAEkbfGlBMpPuJvvOg8B02IebZrW-EDMRso"
