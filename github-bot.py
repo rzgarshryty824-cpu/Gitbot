@@ -7,7 +7,7 @@ from urllib3.util.retry import Retry
 
 # ===== تنظیمات =====
 TOKEN = "8768875388:AAGqRey6F0VLbRSlim6Pm0EFQQyrqR5d5-c"
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = "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"
 USERNAME = "rzgarshryty824-cpu"
 ADMINS = [6830764999]
 CHANNEL_USERNAME = "kunfigs"
