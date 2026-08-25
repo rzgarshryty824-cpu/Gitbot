@@ -17,7 +17,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, MessageHandler, filters, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # ===== تنظیمات =====
-TOKEN = "8976172050:AAEkbfGlBMpPuJvvOg8B02IebZrW-EDMRso"
+TOKEN = "8768875388:AAGqRey6F0VLbRSlim6Pm0EFQQyrqR5d5-c"
 GITHUB_TOKEN = "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"
 USERNAME = "rzgarshryty824-cpu"
 ADMINS = [6830764999]  # آیدی عددی خودت
